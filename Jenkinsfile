@@ -70,7 +70,7 @@ pipeline {
                             ),
                             text(
                                 defaultValue: 'admin', 
-                                name: 'ADMIN_USERNAME'
+                                name: 'ADMIN_LOGIN'
                             ),
                             text(
                                 defaultValue: 'BzZs9%84cdlF2w*N', 
@@ -96,7 +96,7 @@ pipeline {
                     // sh 'mkdir -p .m2 && cp -rT /data ~/.m2 &> /dev/null || true'
                     dir('app') {
                         container('yq') {
-                            sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.setting.env.admin_username = \"${params.ADMIN_USERNAME}\") | (.setting.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.setting.env.concurrency = \"${params.CONCURRENCY}\") | (.setting.env.test_duration = \"${params.TEST_DURATION}\")' --inplace jira.yml"
+                            sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.setting.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.setting.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.setting.env.concurrency = \"${params.CONCURRENCY}\") | (.setting.env.test_duration = \"${params.TEST_DURATION}\")' --inplace jira.yml"
                         }
 
                         container('maven') {
@@ -165,7 +165,7 @@ pipeline {
                     ]
                 ]
                 
-                slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
     }
