@@ -81,7 +81,7 @@ pipeline {
                                 name: 'CONCURRENCY'
                             ),
                             text(
-                                defaultValue: '45', 
+                                defaultValue: '45m', 
                                 name: 'TEST_DURATION', 
                             )
                         ])
@@ -99,7 +99,7 @@ pipeline {
                             sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = \"${params.CONCURRENCY}\") | (.settings.env.test_duration = \"${params.TEST_DURATION}\")' --inplace jira.yml"
                         }
 
-                        container('maven') {
+                        container('dcapt') {
                             sh 'bzt jira.yml'
                         }
                         results_summary = sh returnStdout: true, script: 'cat **/results_summary.log'
