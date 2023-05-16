@@ -76,9 +76,10 @@ pipeline {
                                 defaultValue: 'BzZs9%84cdlF2w*N', 
                                 name: 'ADMIN_PASSWORD'
                             ),
-                            text(
+                            string(
                                 defaultValue: '200', 
-                                name: 'CONCURRENCY'
+                                name: 'CONCURRENCY',
+                                trim: true
                             ),
                             text(
                                 defaultValue: '45m', 
