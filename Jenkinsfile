@@ -40,17 +40,6 @@ pipeline {
     }
 
     stages {
-        // stage('restore cache') {
-        //     steps {
-        //         script {
-        //             container('minio') {
-        //                 sh "mc alias set minio http://minio.minio.svc.cluster.local:9000 vJlIj3mKR4Df9ZHt 9qZLIDh5A14IciJfEcmwGAk9iVQxHt4L"
-        //                 sh "mc mirror minio/jira-performance-test/ /data &> /dev/null || true"
-        //             }
-        //         }
-        //     }
-        // }
-
         stage('setup parameters') {
             steps {
                 script { 
@@ -93,7 +82,6 @@ pipeline {
         stage('test jira performance'){
             steps {
                 script {
-                    // sh 'mkdir -p .m2 && cp -rT /data ~/.m2 &> /dev/null || true'
                     dir('app') {
                         def concurrency = params.CONCURRENCY.toInteger()
                         container('yq') {
@@ -101,15 +89,11 @@ pipeline {
                         }
 
                         container('dcapt') {
-                            sh 'bzt jira.yml'
+                            sh 'bzt jira.yml || true'
                         }
-                        results_summary = sh returnStdout: true, script: 'cat **/results_summary.log'
-                    }
 
-                    // sh 'cp -rT ~/.m2 /data &> /dev/null'
-                    // container('minio-cli') {
-                    //     sh "mc mirror /data minio/jira-performance-test/.m2 --overwrite &> /dev/null"
-                    // }
+                        results_summary = sh returnStdout: true, script: 'cat results/jira/**/results_summary.log'
+                    }
                 }
             }
         }
@@ -166,7 +150,7 @@ pipeline {
                     ]
                 ]
                 
-                // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
     }
