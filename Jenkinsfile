@@ -16,22 +16,22 @@ pipeline {
                 command: ["/bin/sh", "-c", "sleep 3000"]
                 tty: true
                 resources:
-                requests:
-                memory: "2048Mi"
-                cpu: "1000m"
-                limits:
-                memory: "4096Mi"
-                cpu: "2000m"
+                  requests:
+                    memory: "2048Mi"
+                    cpu: "1000m"
+                  limits:
+                    memory: "4096Mi"
+                    cpu: "2000m"
                 volumeMounts:
                 - name: shared-data
-                mountPath: /data
+                  mountPath: /data
               - name: yq
                 image: mikefarah/yq:4.6.3
                 command: ["/bin/sh", "-c", "sleep 3000"]
                 tty: true
                 volumeMounts:
                 - name: shared-data
-                mountPath: /data
+                  mountPath: /data
               volumes:
               - name: shared-data
                 emptyDir: {}
