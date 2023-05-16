@@ -7,34 +7,34 @@ pipeline {
             apiVersion: v1
             kind: Pod
             metadata:
-                labels:
-                    jenkin-job: jira-performance-tests
+              labels:
+                jenkin-job: jira-performance-tests
             spec:
-                containers:
-                - name: dcapt
-                    image: atlassian/dcapt:7.3.0
-                    command: ["/bin/sh", "-c", "sleep 3000"]
-                    tty: true
-                    resources:
-                    requests:
-                        memory: "2048Mi"
-                        cpu: "1000m"
-                    limits:
-                        memory: "4096Mi"
-                        cpu: "2000m"
-                    volumeMounts:
-                    - name: shared-data
-                    mountPath: /data
-                - name: yq
-                    image: mikefarah/yq:4.6.3
-                    command: ["/bin/sh", "-c", "sleep 3000"]
-                    tty: true
-                    volumeMounts:
-                    - name: shared-data
-                    mountPath: /data
-                volumes:
+              containers:
+              - name: dcapt
+                image: atlassian/dcapt:7.3.0
+                command: ["/bin/sh", "-c", "sleep 3000"]
+                tty: true
+                resources:
+                requests:
+                memory: "2048Mi"
+                cpu: "1000m"
+                limits:
+                memory: "4096Mi"
+                cpu: "2000m"
+                volumeMounts:
                 - name: shared-data
-                    emptyDir: {}
+                mountPath: /data
+              - name: yq
+                image: mikefarah/yq:4.6.3
+                command: ["/bin/sh", "-c", "sleep 3000"]
+                tty: true
+                volumeMounts:
+                - name: shared-data
+                mountPath: /data
+              volumes:
+              - name: shared-data
+                emptyDir: {}
             '''
         }
     }
