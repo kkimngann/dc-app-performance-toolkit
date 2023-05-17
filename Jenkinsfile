@@ -45,8 +45,10 @@ pipeline {
         stage('setup parameters') {
             steps {
                 script { 
-                    echo env.BUILD_URL
-                    
+                    def buildUrl = env.BUILD_URL
+                    echo "Build URL: ${buildUrl}"
+
+                    // Set default values for parameters
                     properties([
                         parameters([
                             text(
