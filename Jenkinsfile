@@ -3,41 +3,41 @@ def results_summary = ''
 pipeline {
     agent {
         kubernetes {
-        yaml '''
-            apiVersion: v1
-            kind: Pod
-            metadata:
-              labels:
-                jenkin-job: jira-performance-tests
-            spec:
-              containers:
-              - name: dcapt
-                image: atlassian/dcapt:7.3.0
-                command: ["/bin/sh", "-c", "sleep 3000"]
-                tty: true
-                resources:
-                  requests:
-                    memory: "8192Mi"
-                    cpu: "2000m"
-                securityContext:
-                  capabilities:
-                    add:
-                    - IPC_LOCK
-                volumeMounts:
-                - name: shared-data
-                  mountPath: /data
-              - name: yq
-                image: mikefarah/yq:4.6.3
-                command: ["/bin/sh", "-c", "sleep 3000"]
-                tty: true
-                volumeMounts:
-                - name: shared-data
-                  mountPath: /dev/shmc
-              volumes:
-              - name: shared-data
-                emptyDir:
-                  medium: Memory
-            '''
+        // yaml '''
+        //     apiVersion: v1
+        //     kind: Pod
+        //     metadata:
+        //       labels:
+        //         jenkin-job: jira-performance-tests
+        //     spec:
+        //       containers:
+        //       - name: dcapt
+        //         image: atlassian/dcapt:7.3.0
+        //         command: ["/bin/sh", "-c", "sleep 3000"]
+        //         tty: true
+        //         resources:
+        //           requests:
+        //             memory: "8192Mi"
+        //             cpu: "2000m"
+        //         securityContext:
+        //           capabilities:
+        //             add:
+        //             - IPC_LOCK
+        //         volumeMounts:
+        //         - name: shared-data
+        //           mountPath: /data
+        //       - name: yq
+        //         image: mikefarah/yq:4.6.3
+        //         command: ["/bin/sh", "-c", "sleep 3000"]
+        //         tty: true
+        //         volumeMounts:
+        //         - name: shared-data
+        //           mountPath: /dev/shmc
+        //       volumes:
+        //       - name: shared-data
+        //         emptyDir:
+        //           medium: Memory
+        //     '''
         }
     }
 
