@@ -19,6 +19,10 @@ pipeline {
                   requests:
                     memory: "8192Mi"
                     cpu: "2000m"
+                securityContext:
+                  capabilities:
+                    add:
+                    - IPC_LOCK
                 volumeMounts:
                 - name: shared-data
                   mountPath: /data
@@ -28,10 +32,11 @@ pipeline {
                 tty: true
                 volumeMounts:
                 - name: shared-data
-                  mountPath: /data
+                  mountPath: /dev/shmc
               volumes:
               - name: shared-data
-                emptyDir: {}
+                emptyDir:
+                  medium: Memory
             '''
         }
     }
@@ -153,12 +158,13 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": "*:pushpin: More info at:*\n• *Build URL:* ${env.BUILD_URL}\n• *Full reports:* ${env.BUILD_URL}jira-performance-reports"
+                            "text": "*:pushpin: More info at:*\n• *Build URL:* ${currentBuild.absoluteUrl}\n• *Full reports:* ${currentBuild.absoluteUrl}jira-performance-reports"
                         ]
                     ]
                 ]
                 
-                slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                echo currentBuild.absoluteUrl
+                // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
     }
