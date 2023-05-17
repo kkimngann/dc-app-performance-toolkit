@@ -17,10 +17,7 @@ pipeline {
                 tty: true
                 resources:
                   requests:
-                    memory: "2048Mi"
-                    cpu: "1000m"
-                  limits:
-                    memory: "4096Mi"
+                    memory: "8192Mi"
                     cpu: "2000m"
                 volumeMounts:
                 - name: shared-data
@@ -66,12 +63,20 @@ pipeline {
                                 name: 'ADMIN_PASSWORD'
                             ),
                             text(
-                                defaultValue: '200', 
+                                defaultValue: '200',
                                 name: 'CONCURRENCY'
                             ),
                             text(
                                 defaultValue: '45m', 
-                                name: 'TEST_DURATION', 
+                                name: 'TEST_DURATION',
+                            ),
+                            text(
+                                defaultValue: '3m',
+                                name: 'RAMP_UP'
+                            ),
+                            text(
+                                defaultValue: '54500',
+                                name: 'TOTAL_ACTIONS_PER_HOUR'
                             )
                         ])
                     ])
@@ -87,7 +92,7 @@ pipeline {
                         def concurrency = params.CONCURRENCY.toInteger()
                         container('yq') {
                             // Update test parameters with values from input
-                            sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\")' --inplace jira.yml"
+                            sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\") | (.settings.env.ramp-up = \"${params.RAMP_UP}\") | (.settings.env.total_actions_per_hour = \"${params.TOTAL_ACTIONS_PER_HOUR}\")' --inplace jira.yml"
                         }
 
                         container('dcapt') {
