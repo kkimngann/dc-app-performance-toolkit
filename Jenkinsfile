@@ -19,10 +19,6 @@ pipeline {
                   requests:
                     memory: "8192Mi"
                     cpu: "2000m"
-                securityContext:
-                  capabilities:
-                    add:
-                    - IPC_LOCK
                 volumeMounts:
                 - name: shared-data
                   mountPath: /data
@@ -32,11 +28,10 @@ pipeline {
                 tty: true
                 volumeMounts:
                 - name: shared-data
-                  mountPath: /dev/shmc
+                  mountPath: /data
               volumes:
               - name: shared-data
-                emptyDir:
-                  medium: Memory
+                emptyDir: {}
             '''
         }
     }
