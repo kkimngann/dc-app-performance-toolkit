@@ -83,8 +83,10 @@ pipeline {
             steps {
                 script {
                     dir('app') {
+                        // convert concurrency to integer
                         def concurrency = params.CONCURRENCY.toInteger()
                         container('yq') {
+                            // Update test parameters with values from input
                             sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\")' --inplace jira.yml"
                         }
 
@@ -92,7 +94,8 @@ pipeline {
                             sh 'bzt jira.yml || true'
                         }
 
-                        results_summary = sh returnStdout: true, script: 'sed -n -e \'/Summary run status/,/Has app-specific actions/ p\' results/jira/**/results_summary.log'
+                        // Get results summary
+                        results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' test.log | sed 's/ \\{2,\\}/\\t/g' | column -t -s $'\\t'"
                     }
                 }
             }
@@ -128,7 +131,7 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": ":tada: Job *${env.JOB_NAME}* has been finished.\n\nTest parameters:\n• Application hostname: ${params.APPLICATION_HOSTNAME}\n• Concurrency: ${params.CONCURRENCY} users\n• Time duration: ${params.TEST_DURATION} minutes"
+                            "text": ":tada: Job *${env.JOB_NAME}* has been finished.\n\nTest parameters:\n• Application hostname: ${params.APPLICATION_HOSTNAME}\n• Concurrency: ${params.CONCURRENCY} users\n• Time duration: ${params.TEST_DURATION}c"
                         ]
                     ],
                     [
