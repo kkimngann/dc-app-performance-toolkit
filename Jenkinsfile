@@ -95,7 +95,7 @@ pipeline {
                         }
 
                         // Get results summary
-                        results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' test.log | sed 's/ \\{2,\\}/\\t/g' | column -t -s $'\\t'"
+                        results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' test.log | sed 's/ \\{2,\\}/\\t/g' | column -t -s $'\t'"
                     }
                 }
             }
