@@ -163,6 +163,7 @@ pipeline {
                     ]
                 ]
                 
+                echo env.BUILD_URL
                 // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
