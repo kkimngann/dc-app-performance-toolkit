@@ -46,7 +46,7 @@ pipeline {
             steps {
                 script { 
                     echo currentBuild.absoluteUrl
-                    
+
                     properties([
                         parameters([
                             text(
@@ -160,12 +160,11 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": "*:pushpin: More info at:*\n• *Build URL:* ${currentBuild.absoluteUrl}\n• *Full reports:* ${currentBuild.absoluteUrl}jira-performance-reports"
+                            "text": "*:pushpin: More info at:*\n• *Build URL:* ${env.BUILD_URL}\n• *Full reports:* ${env.BUILD_URL}jira-performance-reports"
                         ]
                     ]
                 ]
                 
-                echo currentBuild.absoluteUrl
                 // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
