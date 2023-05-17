@@ -45,8 +45,6 @@ pipeline {
         stage('setup parameters') {
             steps {
                 script { 
-                    echo currentBuild.absoluteUrl
-
                     properties([
                         parameters([
                             text(
