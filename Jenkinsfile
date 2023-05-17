@@ -42,18 +42,11 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
-            steps {
-                script {
-                    def buildUrl = currentBuild.getAbsoluteUrl()
-                    echo "Build URL: ${buildUrl}"
-                }
-            }
-        }
-        
         stage('setup parameters') {
             steps {
-                script { 
+                script {
+                    echo env.JENKINS_URL
+                    echo env.RUN_ARTIFACTS_DISPLAY_URL
                     // Set default values for parameters
                     properties([
                         parameters([
