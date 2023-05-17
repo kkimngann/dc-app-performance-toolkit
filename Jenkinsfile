@@ -42,14 +42,18 @@ pipeline {
     }
 
     stages {
+        stage('Build') {
+            steps {
+                script {
+                    def buildUrl = currentBuild.getAbsoluteUrl()
+                    echo "Build URL: ${buildUrl}"
+                }
+            }
+        }
+        
         stage('setup parameters') {
             steps {
                 script { 
-                    // def buildUrl = env.BUILD_URL
-                    // echo "Build URL: ${buildUrl}"
-                    def buildUrl = currentBuild.getAbsoluteUrl()
-                    echo "Build URL: ${buildUrl}"
-
                     // Set default values for parameters
                     properties([
                         parameters([
