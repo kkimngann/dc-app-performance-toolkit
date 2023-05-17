@@ -45,6 +45,8 @@ pipeline {
         stage('setup parameters') {
             steps {
                 script { 
+                    echo currentBuild.absoluteUrl
+                    
                     properties([
                         parameters([
                             text(
@@ -89,41 +91,41 @@ pipeline {
             }
         }
 
-        stage('test jira performance'){
-            steps {
-                script {
-                    dir('app') {
-                        // convert concurrency to integer
-                        def concurrency = params.CONCURRENCY.toInteger()
-                        container('yq') {
-                            // Update test parameters with values from input
-                            sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\") | (.settings.env.ramp-up = \"${params.RAMP_UP}\") | (.settings.env.total_actions_per_hour = \"${params.TOTAL_ACTIONS_PER_HOUR}\")' --inplace jira.yml"
-                        }
+        // stage('test jira performance'){
+        //     steps {
+        //         script {
+        //             dir('app') {
+        //                 // convert concurrency to integer
+        //                 def concurrency = params.CONCURRENCY.toInteger()
+        //                 container('yq') {
+        //                     // Update test parameters with values from input
+        //                     sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\") | (.settings.env.ramp-up = \"${params.RAMP_UP}\") | (.settings.env.total_actions_per_hour = \"${params.TOTAL_ACTIONS_PER_HOUR}\")' --inplace jira.yml"
+        //                 }
 
-                        container('dcapt') {
-                            sh 'bzt jira.yml || true'
-                        }
+        //                 container('dcapt') {
+        //                     sh 'bzt jira.yml || true'
+        //                 }
 
-                        // Get results summary
-                        results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' results/jira/**/results_summary.log | sed 's/ \\{2,\\}/\\t/g' | awk -F'\\t' 'BEGIN{OFS=\"\\t\"} {printf \"%-41s %-30s\\n\", \$1, \$2}'"
-                    }
-                }
-            }
-        }
+        //                 // Get results summary
+        //                 results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' results/jira/**/results_summary.log | sed 's/ \\{2,\\}/\\t/g' | awk -F'\\t' 'BEGIN{OFS=\"\\t\"} {printf \"%-41s %-30s\\n\", \$1, \$2}'"
+        //             }
+        //         }
+        //     }
+        // }
     }
 
     post {
         always {
-            archiveArtifacts artifacts: 'app/results/jira/**/*', onlyIfSuccessful: false
+            // archiveArtifacts artifacts: 'app/results/jira/**/*', onlyIfSuccessful: false
 
-            publishHTML (target : [allowMissing: false,
-            alwaysLinkToLastBuild: true,
-            keepAll: true,
-            reportDir: 'app/results/jira',
-            reportFiles: '**/results_summary.log',
-            reportName: 'jira-performance-reports',
-            reportTitles: '', 
-            useWrapperFileDirectly: true])
+            // publishHTML (target : [allowMissing: false,
+            // alwaysLinkToLastBuild: true,
+            // keepAll: true,
+            // reportDir: 'app/results/jira',
+            // reportFiles: '**/results_summary.log',
+            // reportName: 'jira-performance-reports',
+            // reportTitles: '', 
+            // useWrapperFileDirectly: true])
             
             script {
                 def blocks = [
