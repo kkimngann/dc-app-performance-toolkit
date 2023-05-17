@@ -46,6 +46,8 @@ pipeline {
             steps {
                 script {
                     echo env.JENKINS_URL
+                    echo env.BUILD_URL
+                    echo env.RUN_DISPLAY_URL
                     echo env.RUN_ARTIFACTS_DISPLAY_URL
                     // Set default values for parameters
                     properties([
