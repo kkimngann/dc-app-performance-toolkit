@@ -95,7 +95,8 @@ pipeline {
                         }
 
                         // Get results summary
-                        results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' test.log | sed 's/ \\{2,\\}/\\t/g' | awk -F'\\t' 'BEGIN{OFS=\"\\t\"} {printf \"%-41s %-30s\\n\", \$1, \$2}'"
+                        results_summary = sh returnStdout: true, script: "sed -n -e '/Summary run status/,/Has app-specific actions/ p' results/jira/**/results_summary.log | sed 's/ \\{2,\\}/\\t/g' | awk -F'\\t' 'BEGIN{OFS=\"\\t\"} {printf \"%-41s %-30s\\n\", \$1, \$2}'"
+                        echo results_summary
                     }
                 }
             }
@@ -153,7 +154,7 @@ pipeline {
                     ]
                 ]
                 
-                slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
     }
