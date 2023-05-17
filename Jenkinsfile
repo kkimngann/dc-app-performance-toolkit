@@ -45,6 +45,8 @@ pipeline {
         stage('setup parameters') {
             steps {
                 script { 
+                    echo env.BUILD_URL
+                    
                     properties([
                         parameters([
                             text(
@@ -163,7 +165,6 @@ pipeline {
                     ]
                 ]
                 
-                echo env.BUILD_URL
                 // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
