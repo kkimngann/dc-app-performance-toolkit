@@ -92,7 +92,7 @@ pipeline {
                             sh 'bzt jira.yml || true'
                         }
 
-                        results_summary = sh returnStdout: true, script: 'cat results/jira/**/results_summary.log'
+                        results_summary = sh returnStdout: true, script: 'sed -n -e \'/Summary run status/,/Has app-specific actions/ p\' results/jira/**/results_summary.log'
                     }
                 }
             }
@@ -107,7 +107,7 @@ pipeline {
             alwaysLinkToLastBuild: true,
             keepAll: true,
             reportDir: 'app/results/jira',
-            reportFiles: '**/*.err, **/*.csv, **/*.log',
+            reportFiles: '**/results_summary.log',
             reportName: 'jira-performance-reports',
             reportTitles: '', 
             useWrapperFileDirectly: true])
