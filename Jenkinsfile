@@ -44,7 +44,7 @@ pipeline {
                     properties([
                         parameters([
                             text(
-                                defaultValue: 'jiradc.qa.godemo.art',
+                                defaultValue: 'jira-9.aandd.io',
                                 name: 'APPLICATION_HOSTNAME'
                             ),
                             text(
@@ -159,7 +159,7 @@ pipeline {
                     ]
                 ]
                 
-                // slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
             }
         }
     }
