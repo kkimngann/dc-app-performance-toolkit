@@ -60,7 +60,7 @@ pipeline {
                                 name: 'ADMIN_LOGIN'
                             ),
                             text(
-                                defaultValue: 'BzZs9%84cdlF2w*N', 
+                                defaultValue: 'admin12345678', 
                                 name: 'ADMIN_PASSWORD'
                             ),
                             text(
@@ -158,7 +158,7 @@ pipeline {
                         ]
                     ]
                 ]
-                
+
                 if (getContext(hudson.FilePath)) {
                     slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
                 }
