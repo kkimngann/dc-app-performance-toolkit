@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Trigger Jenkins build
-        uses: jenkinsci/github-plugin@1.29.5
+        uses: jenkinsci/github-plugin@5.0.2
         with:
           jenkins_url: ${{ secrets.JENKINS_URL }}
           job: jira-performance-test
