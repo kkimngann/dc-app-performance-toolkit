@@ -137,7 +137,7 @@ pipeline {
                         "type": "section",
                         "text": [
                             "type": "mrkdwn",
-                            "text": ":tada: Job *${env.JOB_NAME}* has been finished.\n\nTest parameters:\n• Application hostname: ${params.APPLICATION_HOSTNAME}\n• Concurrency: ${params.CONCURRENCY} users\n• Time duration: ${params.TEST_DURATION}c"
+                            "text": ":tada: Job *${env.JOB_NAME}* has been finished.\n\nTest parameters:\n• Application hostname: ${params.APPLICATION_HOSTNAME}\n• Concurrency: ${params.CONCURRENCY} users\n• Time duration: ${params.TEST_DURATION}"
                         ]
                     ],
                     [
@@ -159,7 +159,9 @@ pipeline {
                     ]
                 ]
                 
-                slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                if (getContext(hudson.FilePath)) {
+                    slackSend channel: 'automation-test-notifications', blocks: blocks, teamDomain: 'agileops', tokenCredentialId: 'jenkins-slack', botUser: true
+                }
             }
         }
     }
