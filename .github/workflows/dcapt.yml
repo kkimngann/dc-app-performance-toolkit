@@ -11,18 +11,9 @@ jobs:
 
     steps:
       - name: Trigger Jenkins build
-        uses: enflo/jenkins-action@master
+        uses: jenkinsci/github-plugin@1.29.5
         with:
-          url: ${{ secrets.JENKINS_URL }}
-          token: ${{ secrets.JENKINS_TOKEN }}
+          jenkins_url: ${{ secrets.JENKINS_URL }}
           job: jira-performance-test
-          parameters: |
-            application_hostname=${{ inputs.application_hostname }}
-            application_protocol=${{ inputs.application_protocol }}
-            application_port=${{ inputs.application_port }}
-            admin_login=${{ inputs.admin_login }}
-            admin_password=${{ inputs.admin_password }}
-            concurrency=${{ inputs.concurrency }}
-            test_duration=${{ inputs.test_duration }}
-            ramp-up=${{ inputs.ramp-up }}
-            total_actions_per_hour=${{ inputs.total_actions_per_hour }}
+          username: admin
+          password: ${{ secrets.JENKINS_TOKEN }}
