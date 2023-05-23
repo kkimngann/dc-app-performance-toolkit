@@ -14,9 +14,10 @@ jobs:
         timeout-minutes: 10
       - name: Run DC App Performance Toolkit
         run: docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
-      - name: Archive production artifacts
-        uses: actions/upload-artifact@v3
+      - name: Zip artifact for deployment
+        run: zip jira-results.zip /dc-app-performance-toolkit/app/results/jira/* -r
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
         with:
-          name: Archive test artifacts
-          path: |
-            /dc-app-performance-toolkit/app/results/jira/**/*
+          name: node-app
+          path: jira-results.zip
