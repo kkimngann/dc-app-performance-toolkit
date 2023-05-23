@@ -19,4 +19,4 @@ jobs:
         with:
           name: Archive test artifacts
           path: |
-            /app/results/jira/**/*
+            /dc-app-performance-toolkit/app/results/jira/**/*
