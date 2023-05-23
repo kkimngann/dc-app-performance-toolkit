@@ -6,9 +6,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    container:
-      image: docker://atlassian/dcapt:7.3.0
-      options: >-
-        --shm-size=4g
-        --volume=./dc-app-performance-toolkit:/dc-app-performance-toolkit
-        --entrypoint jira.yml
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Run test
+      uses: docker://atlassian/dcapt:7.3.0
+      with:
+        options: >-
+          --volume=${{ github.workspace }}/dc-app-performance-toolkit:/github/home/dc-app-performance-toolkit
+          --shm-size=4g
+        args: jira.yml
