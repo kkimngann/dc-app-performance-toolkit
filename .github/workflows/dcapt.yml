@@ -15,7 +15,7 @@ jobs:
       - name: Run DC App Performance Toolkit
         run: docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
       - name: Zip artifact for deployment
-        run: zip jira-results.zip /dc-app-performance-toolkit/app/results/jira/* -r
+        run: zip -r jira-results.zip . -i /dc-app-performance-toolkit/app/results/jira/*
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
