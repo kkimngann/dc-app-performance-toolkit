@@ -12,7 +12,7 @@ pipeline {
             spec:
               containers:
               - name: dcapt
-                image: th2nhb1nh/dcapt
+                image: atlassian/dcapt:latest
                 command: ["/bin/sh", "-c", "sleep 3000"]
                 tty: true
                 resources:
