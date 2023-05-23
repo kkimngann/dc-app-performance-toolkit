@@ -4,65 +4,15 @@ on:
   push:
     branches:
       - feature/cicd
-  workflow_dispatch:
-    inputs:
-      application_hostname:
-        description: 'Application hostname'
-        required: true
-        default: 'jira-9.aandd.io'
-      application_protocol:
-        description: 'Application protocol'
-        required: true
-        default: 'https'
-      application_port:
-        description: 'Application port'
-        required: true
-        default: '443'
-      admin_login:
-        description: 'Admin login'
-        required: true
-        default: 'admin'
-      admin_password:
-        description: 'Admin password'
-        required: true
-        default: '12345678'
-      concurrency:
-        description: 'Concurrency'
-        required: true
-        default: '200'
-      test_duration:
-        description: 'Test duration'
-        required: true
-        default: '3m'
-      ramp-up:
-        description: 'Ramp-up'
-        required: true
-        default: '3m'
-      total_actions_per_hour:
-        description: 'Total actions per hour'
-        required: true
-        default: '54500'
 
 jobs:
-  trigger-jenkins-job:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Jenkins Job
-        uses: appleboy/jenkins-action@master
-        with:
-          url: ${{ secrets.JENKINS_URL }}
-          user: admin
-          token: ${{ secrets.JENKINS_TOKEN }}
-          job: jira-performance-test
-          args: |
-            [
-              {"name": "application_hostname", "value": "${{ github.event.inputs.application_hostname }}"},
-              {"name": "application_protocol", "value": "${{ github.event.inputs.application_protocol }}"},
-              {"name": "application_port", "value": "${{ github.event.inputs.application_port }}"},
-              {"name": "admin_login", "value": "${{ github.event.inputs.admin_login }}"},
-              {"name": "admin_password", "value": "${{ github.event.inputs.admin_password }}"},
-              {"name": "concurrency", "value": "${{ github.event.inputs.concurrency }}"},
-              {"name": "test_duration", "value": "${{ github.event.inputs.test_duration }}"},
-              {"name": "ramp-up", "value": "${{ github.event.inputs.ramp-up }}"},
-              {"name": "total_actions_per_hour", "value": "${{ github.event.inputs.total_actions_per_hour }}"}
-            ]
+    - name: Check out the repo
+      uses: actions/checkout@v2
+    - name: Run DCAPT
+      uses: docker://atlassian/dcapt:7.3.0
+      with:
+        options: --shm-size=4g, -v $PWD:/dc-app-performance-toolkit
+        args: -c /app/jira.yml -o /app/results
