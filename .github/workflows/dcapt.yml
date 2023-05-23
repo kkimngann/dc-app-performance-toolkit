@@ -7,12 +7,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-    - name: Run test
-      uses: docker://atlassian/dcapt:7.3.0
-      with:
-        options: >-
-          --volume=${{ github.workspace }}/dc-app-performance-toolkit:/github/home/dc-app-performance-toolkit
-          --shm-size=4g
-        args: jira.yml
+      - uses: actions/checkout@v2
+      - name: Run tests
+        uses: docker://atlassian/dcapt:7.3.0
+        with:
+          args: >-
+            --shm-size=4g
+            jira.yml
+          folder: /dc-app-performance-toolkit/app
