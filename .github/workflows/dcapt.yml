@@ -7,11 +7,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Run tests
         uses: docker://atlassian/dcapt:7.3.0
         with:
-          args: >-
+          options: >-
             --shm-size=4g
-            jira.yml
-          folder: /dc-app-performance-toolkit/app
+            --volume=${{ github.workspace }}/app:dc-performance-toolkit/app
+          args: jira.yml
+          fail-on-error: true
