@@ -12,4 +12,5 @@ jobs:
     - name: Run DCAPT
       uses: docker://atlassian/dcapt:7.3.0
       with:
-        options: --shm-size=4g, -v ${{ github.workspace }}:/dc-app-performance-toolkit
+        options: --shm-size=4g, -v {{ github.workspace }}:/dc-app-performance-toolkit
+        args:  jira.yml
