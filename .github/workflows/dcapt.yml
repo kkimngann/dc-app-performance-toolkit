@@ -15,4 +15,4 @@ jobs:
       uses: docker://atlassian/dcapt:7.3.0
       with:
         options: --shm-size=4g, -v $PWD:/dc-app-performance-toolkit
-        args: -c /app/jira.yml -o /app/results
+        args:  /app/jira.yml
