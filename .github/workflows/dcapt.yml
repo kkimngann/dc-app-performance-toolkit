@@ -10,6 +10,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set up Docker
-        uses: docker/setup-docker@v1
+        uses: docker-practice/actions-setup-docker@master
+        timeout-minutes: 10
       - name: Run DC App Performance Toolkit
         run: docker run --shm-size=4g -v "$PWD:/dc-app-performance-toolkit" atlassian/dcapt jira.yml
