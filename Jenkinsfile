@@ -60,7 +60,7 @@ pipeline {
                                 name: 'ADMIN_LOGIN'
                             ),
                             text(
-                                defaultValue: 'admin12345678', 
+                                defaultValue: '12345678', 
                                 name: 'ADMIN_PASSWORD'
                             ),
                             text(
