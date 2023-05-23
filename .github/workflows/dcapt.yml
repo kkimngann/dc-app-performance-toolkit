@@ -6,11 +6,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:
-    - name: Check out the repo
-      uses: actions/checkout@v2
-    - name: Run DCAPT
-      uses: docker://atlassian/dcapt:7.3.0
-      with:
-        options: --shm-size=4g, -v {{ github.workspace }}:/dc-app-performance-toolkit
-        args:  jira.yml
+    container:
+      image: docker://atlassian/dcapt:7.3.0
+      options: >-
+        --shm-size=4g
+        --volume=./dc-app-performance-toolkit:/dc-app-performance-toolkit
+        --entrypoint jira.yml
