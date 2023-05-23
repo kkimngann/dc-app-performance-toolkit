@@ -51,10 +51,10 @@ jobs:
         uses: appleboy/jenkins-action@master
         with:
           url: ${{ secrets.JENKINS_URL }}
-          username: admin
-          password: ${{ secrets.JENKINS_TOKEN }}
+          user: admin
+          token: ${{ secrets.JENKINS_TOKEN }}
           job: jira-performance-test
-          parameters: |
+          args: |
             [
               {"name": "application_hostname", "value": "${{ github.event.inputs.application_hostname }}"},
               {"name": "application_protocol", "value": "${{ github.event.inputs.application_protocol }}"},
