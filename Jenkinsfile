@@ -100,7 +100,7 @@ pipeline {
                         
 
                         container('dcapt') {
-                            sh 'bzt jira.yml || true'
+                            sh 'bzt -o modules.console.disable=true jira.yml || true'
                         }
 
                         // Get results summary
