@@ -11,6 +11,10 @@ pipeline {
                 jenkin-job: jira-performance-tests
             spec:
               containers:
+              - name: aws-cli
+                image: amazon/aws-cli:2.11.10
+                command: ["/bin/sh", "-c", "sleep 3000"]
+                tty: true
               - name: dcapt
                 image: atlassian/dcapt:latest
                 command: ["/bin/sh", "-c", "sleep 3000"]
@@ -95,6 +99,18 @@ pipeline {
                             // Update test parameters with values from input
                             sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\") | (.settings.env.ramp-up = \"${params.RAMP_UP}\") | (.settings.env.total_actions_per_hour = \"${params.TOTAL_ACTIONS_PER_HOUR}\")' --inplace jira.yml"
                         }
+
+                        withCredentials([file(credentialsId: 'aws-config', variable: 'AWS_CONFIG_FILE'), file(credentialsId: 'aws-credentials', variable: 'AWS_CREDENTIALS_FILE')]]) {
+                            sh '''
+                                mkdir -p ~/.aws
+                                cp $AWS_CONFIG_FILE ~/.aws/config
+                                cp $AWS_CREDENTIALS_FILE ~/.aws/credentials
+                            '''
+                            container('aws-cli') {
+                                sh 'aws ecr get-login-password --region ap-southeast-1 | docker login --username AWS --password-stdin 899159155532.dkr.ecr.ap-southeast-1.amazonaws.com'
+                            }
+                        }
+                        
 
                         container('dcapt') {
                             sh 'bzt jira.yml || true'
