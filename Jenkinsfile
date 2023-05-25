@@ -10,13 +10,15 @@ pipeline {
               labels:
                 jenkin-job: jira-performance-tests
             spec:
+              imagePullSecrets:
+                - name: ecr-puller
               containers:
               - name: aws-cli
                 image: amazon/aws-cli:2.11.10
                 command: ["/bin/sh", "-c", "sleep 3000"]
                 tty: true
               - name: dcapt
-                image: atlassian/dcapt:latest
+                image: 899159155532.dkr.ecr.ap-southeast-1.amazonaws.com/atlassian-dcapt:latest
                 command: ["/bin/sh", "-c", "sleep 3000"]
                 tty: true
                 resources:
