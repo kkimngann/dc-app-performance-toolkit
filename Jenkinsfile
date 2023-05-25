@@ -102,7 +102,7 @@ pipeline {
                             sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\") | (.settings.env.ramp-up = \"${params.RAMP_UP}\") | (.settings.env.total_actions_per_hour = \"${params.TOTAL_ACTIONS_PER_HOUR}\")' --inplace jira.yml"
                         }
 
-                        withCredentials([file(credentialsId: 'aws-config', variable: 'AWS_CONFIG_FILE'), file(credentialsId: 'aws-credentials', variable: 'AWS_CREDENTIALS_FILE')]]) {
+                        withCredentials([file(credentialsId: 'aws-config', variable: 'AWS_CONFIG_FILE'), file(credentialsId: 'aws-credentials', variable: 'AWS_CREDENTIALS_FILE')]) {
                             sh '''
                                 mkdir -p ~/.aws
                                 cp $AWS_CONFIG_FILE ~/.aws/config
