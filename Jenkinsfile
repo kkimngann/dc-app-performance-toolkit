@@ -15,7 +15,7 @@ pipeline {
               containers:
               - name: dcapt
                 image: 899159155532.dkr.ecr.ap-southeast-1.amazonaws.com/atlassian-dcapt:latest
-                command: ["/bin/sh", "-c", "sleep 3000"]
+                command: ["/bin/sh", "-c", "sleep infinity"]
                 tty: true
                 resources:
                   requests:
@@ -26,7 +26,7 @@ pipeline {
                   mountPath: /data
               - name: yq
                 image: mikefarah/yq:4.6.3
-                command: ["/bin/sh", "-c", "sleep 3000"]
+                command: ["/bin/sh", "-c", "sleep infinity"]
                 tty: true
                 volumeMounts:
                 - name: shared-data
