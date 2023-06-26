@@ -58,7 +58,7 @@ pipeline {
                                 name: 'APPLICATION_PORT'
                             ),
                             text(
-                                defaultValue: '/jira',
+                                defaultValue: '',
                                 name: 'APPLICATION_POSTFIX'
                             ),
                             text(
