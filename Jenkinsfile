@@ -101,7 +101,6 @@ pipeline {
                             // Update test parameters with values from input
                             sh "yq eval '(.settings.env.application_hostname = \"${params.APPLICATION_HOSTNAME}\") | (.settings.env.application_protocol = \"${params.APPLICATION_PROTOCOL}\") | (.settings.env.application_port = \"${params.APPLICATION_PORT}\") | (.settings.env.application_postfix = \"${params.APPLICATION_POSTFIX}\") | (.settings.env.admin_login = \"${params.ADMIN_LOGIN}\") | (.settings.env.admin_password = \"${params.ADMIN_PASSWORD}\") | (.settings.env.concurrency = ${concurrency}) | (.settings.env.test_duration = \"${params.TEST_DURATION}\") | (.settings.env.ramp-up = \"${params.RAMP_UP}\") | (.settings.env.total_actions_per_hour = \"${params.TOTAL_ACTIONS_PER_HOUR}\")' --inplace jira.yml"
                         }
-                        
 
                         container('dcapt') {
                             sh 'bzt -o modules.console.disable=true jira.yml || true'
