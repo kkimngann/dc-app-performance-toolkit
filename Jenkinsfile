@@ -1,6 +1,16 @@
 def results_summary = ''
 
 pipeline {
+    withCredentials([file(secretFileId: 'dcapt_secret', variable: 'dcapt_secret')]) {
+        environment {
+            def DCAPT_IMAGE = readFile(dcapt_secret, 'DCAPT_IMAGE')
+            def DCAPT_APPLICATION_HOSTNAME = readFile(dcapt_secret, 'DCAPT_APPLICATION_HOSTNAME')
+            def DCAPT_APPLICATION_PORT = readFile(dcapt_secret, 'DCAPT_APPLICATION_PORT')
+            def DCAPT_ADMIN_LOGIN = readFile(dcapt_secret, 'DCAPT_ADMIN_LOGIN')
+            def DCAPT_ADMIN_PASSWORD = readFile(dcapt_secret, 'DCAPT_ADMIN_PASSWORD')
+        }
+    }
+        
     agent {
         kubernetes {
         yaml '''
@@ -14,7 +24,7 @@ pipeline {
                 - name: ecr-puller
               containers:
               - name: dcapt
-                image: 899159155532.dkr.ecr.ap-southeast-1.amazonaws.com/atlassian-dcapt:latest
+                image: ${DCAPT_IMAGE}
                 command: ["/bin/sh", "-c", "sleep infinity"]
                 tty: true
                 resources:
@@ -46,7 +56,7 @@ pipeline {
                     properties([
                         parameters([
                             text(
-                                defaultValue: 'jira-9.aandd.io',
+                                defaultValue: '${DCAPT_APPLICATION_HOSTNAME}',
                                 name: 'APPLICATION_HOSTNAME'
                             ),
                             text(
@@ -54,7 +64,7 @@ pipeline {
                                 name: 'APPLICATION_PROTOCOL'
                             ),
                             text(
-                                defaultValue: '443',
+                                defaultValue: '${DCAPT_APPLICATION_PORT}',
                                 name: 'APPLICATION_PORT'
                             ),
                             text(
@@ -62,11 +72,11 @@ pipeline {
                                 name: 'APPLICATION_POSTFIX'
                             ),
                             text(
-                                defaultValue: 'admin', 
+                                defaultValue: '${DCAPT_ADMIN_LOGIN}', 
                                 name: 'ADMIN_LOGIN'
                             ),
                             text(
-                                defaultValue: '12345678', 
+                                defaultValue: '${DCAPT_ADMIN_PASSWORD}', 
                                 name: 'ADMIN_PASSWORD'
                             ),
                             text(
