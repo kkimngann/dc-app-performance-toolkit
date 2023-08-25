@@ -19,5 +19,5 @@ jobs:
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: node-app
+          name: jira-results
           path: jira-results.zip
